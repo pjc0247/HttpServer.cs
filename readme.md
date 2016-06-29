@@ -40,7 +40,7 @@ Adaptor
 * [x] Adaptor 연결고리 제작
 * [ ] 애플리케이션과의 연결고리 제작
 * [ ] CSX Adaptor 제작
-* [ ] Static Adaptor 제작 (단순 파일 서버)
+* [x] Static Adaptor 제작 (단순 파일 서버)
 * [ ] OWIN Adaptor (Nancy)
 
 Application
