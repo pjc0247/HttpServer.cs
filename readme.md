@@ -46,3 +46,19 @@ Adaptor
 Application
 ----
 * [ ] 간단하게 프로그래밍 가능한 어플리케이션 레이어 구성
+
+
+USAGE
+====
+
+Creat Server
+----
+```cs
+// HTTP SERVER
+var serv = ServerFactory.CreateHttp<SimpleAdaptor>();
+
+// HTTPS SERVER
+var serv = ServerFactory.CreateHttps<SimpleAdaptor>(cert);
+
+serv.Open(9916);
+```
