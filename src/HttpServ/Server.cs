@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace HttpServ
 {
     using Http;
+    using System.Security.Cryptography.X509Certificates;
 
     public class Server
     {
@@ -21,11 +22,19 @@ namespace HttpServ
         private long nextSessionId { get; set; }
 
         public bool isRunning { get; private set; }
+        public X509Certificate2 cert { get; private set; }
+        public bool isHTTPS { get; private set; }
 
-        internal Server(IAdaptor adaptor)
+        internal Server(IAdaptor adaptor, X509Certificate2 cert)
         {
             this.adaptor = adaptor;
             this.middlewares = new List<IMiddleware>();
+
+            if (cert != null)
+            {
+                this.isHTTPS = true;
+                this.cert = cert;
+            }
         }
 
         public void Open(int port)
@@ -78,7 +87,21 @@ namespace HttpServ
             while (true)
             {
                 var sock = listener.AcceptTcpClient();
-                var session = new Session(sock, this, nextSessionId); 
+                System.IO.Stream stream = null;
+
+                if (isHTTPS)
+                {
+                    var sslStream = new System.Net.Security.SslStream(sock.GetStream(), true);
+                    
+                    sslStream.AuthenticateAsServer(
+                        cert, false, System.Security.Authentication.SslProtocols.Tls12, false);
+                }
+                else
+                {
+                    stream = sock.GetStream();
+                }
+
+                var session = new Session(sock, stream, this, nextSessionId);
                 session.Open();
 
                 nextSessionId++;

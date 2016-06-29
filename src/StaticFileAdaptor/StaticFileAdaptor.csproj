@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{607E5769-5DCC-447D-BBF1-AD833A8998B0}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{77DA6F28-D347-4CC8-AAFF-A2FFF0E881F5}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Testbed</RootNamespace>
-    <AssemblyName>Testbed</AssemblyName>
+    <RootNamespace>StaticFileAdaptor</RootNamespace>
+    <AssemblyName>StaticFileAdaptor</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -47,17 +50,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\HttpServ\HttpServ.csproj">
       <Project>{bdcd199c-494a-4461-9b28-3a63aade7be0}</Project>
       <Name>HttpServ</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SimpleAdaptor\SimpleAdaptor.csproj">
-      <Project>{6981868a-1ff8-40bd-9fec-5d67e99eb9b6}</Project>
-      <Name>SimpleAdaptor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StaticFileAdaptor\StaticFileAdaptor.csproj">
-      <Project>{77da6f28-d347-4cc8-aaff-a2fff0e881f5}</Project>
-      <Name>StaticFileAdaptor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

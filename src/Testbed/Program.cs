@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using HttpServ;
 using HttpServ.Simple;
+using HttpServ.StaticFileAdaptor;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Testbed
 {
@@ -13,7 +15,8 @@ namespace Testbed
     {
         public static void Main(string[] args)
         {
-            var serv = ServerFactory.Create<SimpleAdaptor>();
+            X509Certificate2 cert = new X509Certificate2("server.pfx", "instant");
+            var serv = ServerFactory.CreateHttp<StaticFileAdaptor>();
             serv.AddMiddleware<HttpServ.WebSocket.Middlewares.WebSocketHandshaker>();
             serv.AddMiddleware<HttpServ.WebSocket.Middlewares.PingPong>();
             serv.Open(9916);

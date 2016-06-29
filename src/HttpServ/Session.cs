@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Net;
+using System.IO;
 
 namespace HttpServ
 {
@@ -21,17 +22,18 @@ namespace HttpServ
 
         internal Server server { get; private set; }
         private TcpClient sock { get; set; }
-        private NetworkStream stream { get; set; }
+        private Stream stream { get; set; }
 
+        private bool isClosed { get; set; }
         private bool isWebSocket { get; set; }
         private bool continueReceiving { get; set; }
 
-        public Session(TcpClient sock, Server server, long id)
+        public Session(TcpClient sock, Stream stream, Server server, long id)
         {
             this.id = id;
             this.sock = sock;
             this.server = server;
-            this.stream = sock.GetStream();
+            this.stream = stream;
 
             this.impl = new HttpSession();
             impl.session = this;
@@ -48,10 +50,15 @@ namespace HttpServ
         }
         public void Close()
         {
+            if (isClosed)
+                return;
+
             stream.Close();
             sock.Close();
 
             server.adaptor.OnClose(this);
+
+            isClosed = true;
         }
 
         /// <summary>
@@ -82,7 +89,7 @@ namespace HttpServ
             var errorQuit = false;
 
             continueReceiving = true;
-
+            
             while (isWebSocket || continueReceiving)
             {
                 continueReceiving = false;
@@ -92,7 +99,7 @@ namespace HttpServ
                     using (var cts = new CancellationTokenSource(5000))
                     {
                         if (isWebSocket == false)
-                            cts.Token.Register(() => { sock.Close(); });
+                            cts.Token.Register(() => { Close(); });
                         var read = await stream.ReadAsync(buffer, 0, buffer.Length);
                         var segment = new ArraySegment<byte>(buffer, 0, read);
 
