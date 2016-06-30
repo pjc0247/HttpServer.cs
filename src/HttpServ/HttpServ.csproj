@@ -46,9 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\CloseSessionException.cs" />
     <Compile Include="Common\WebRequest.cs" />
     <Compile Include="Common\WebResponse.cs" />
     <Compile Include="Http\HttpMiddleware.cs" />
+    <Compile Include="Http\HttpParseException.cs" />
     <Compile Include="Http\HttpRequest.cs" />
     <Compile Include="Http\HttpRequestBuilder.cs" />
     <Compile Include="Http\HttpResponse.cs" />
@@ -60,7 +62,9 @@
     <Compile Include="ISessionImpl.cs" />
     <Compile Include="Http\Middlewares\GzipEncoder.cs" />
     <Compile Include="ServerFactory.cs" />
+    <Compile Include="SessionState.cs" />
     <Compile Include="TargetProtocolAttribute.cs" />
+    <Compile Include="WebSocket\Middlewares\Close.cs" />
     <Compile Include="WebSocket\Middlewares\PingPong.cs" />
     <Compile Include="WebSocket\Middlewares\WebSocketHandshaker.cs" />
     <Compile Include="Session.cs" />

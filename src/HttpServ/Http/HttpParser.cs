@@ -145,6 +145,8 @@ namespace HttpServ.Http
 
         private bool ParseHttpMethod()
         {
+            if (buffer.Length >= 1 && char.IsLetter((char)buffer[0]) == false)
+                throw new HttpParseException();
             if (buffer.Length < 4)
                 return false;
 

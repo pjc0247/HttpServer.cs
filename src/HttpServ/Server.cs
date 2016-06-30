@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Security.Authentication;
 
 namespace HttpServ
 {
@@ -22,8 +23,8 @@ namespace HttpServ
         private long nextSessionId { get; set; }
 
         public bool isRunning { get; private set; }
+        public bool isHttps { get; private set; }
         public X509Certificate2 cert { get; private set; }
-        public bool isHTTPS { get; private set; }
 
         internal Server(IAdaptor adaptor, X509Certificate2 cert)
         {
@@ -32,7 +33,7 @@ namespace HttpServ
 
             if (cert != null)
             {
-                this.isHTTPS = true;
+                this.isHttps = true;
                 this.cert = cert;
             }
         }
@@ -87,25 +88,38 @@ namespace HttpServ
             while (true)
             {
                 var sock = listener.AcceptTcpClient();
-                System.IO.Stream stream = null;
 
-                if (isHTTPS)
-                {
-                    var sslStream = new System.Net.Security.SslStream(sock.GetStream(), true);
-                    
-                    sslStream.AuthenticateAsServer(
-                        cert, false, System.Security.Authentication.SslProtocols.Tls12, false);
+                try {
+                    CreateSession(sock);
                 }
-                else
+                catch(Exception e)
                 {
-                    stream = sock.GetStream();
+                    Console.WriteLine(e);
                 }
-
-                var session = new Session(sock, stream, this, nextSessionId);
-                session.Open();
 
                 nextSessionId++;
             }
+        }
+        private void CreateSession(TcpClient sock)
+        {
+            System.IO.Stream stream = null;
+
+            if (isHttps)
+            {
+                var sslStream = new System.Net.Security.SslStream(sock.GetStream(), false);
+                sslStream.AuthenticateAsServer(
+                    cert, false,
+                    SslProtocols.Tls12 | SslProtocols.Tls11
+                    , false);
+                stream = sslStream;
+            }
+            else
+            {
+                stream = sock.GetStream();
+            }
+
+            var session = new Session(sock, stream, this, nextSessionId);
+            session.Open();
         }
     }
 }

@@ -24,16 +24,21 @@ namespace HttpServ
         private TcpClient sock { get; set; }
         private Stream stream { get; set; }
 
-        private bool isClosed { get; set; }
         private bool isWebSocket { get; set; }
         private bool continueReceiving { get; set; }
 
+        public SessionState state { get; internal set; }
+
         public Session(TcpClient sock, Stream stream, Server server, long id)
         {
+            if (stream == null)
+                throw new ArgumentException("stream -> null");
+
             this.id = id;
             this.sock = sock;
             this.server = server;
             this.stream = stream;
+            this.state = SessionState.Ready;
 
             this.impl = new HttpSession();
             impl.session = this;
@@ -50,7 +55,7 @@ namespace HttpServ
         }
         public void Close()
         {
-            if (isClosed)
+            if (state == SessionState.Closed)
                 return;
 
             stream.Close();
@@ -58,7 +63,28 @@ namespace HttpServ
 
             server.adaptor.OnClose(this);
 
-            isClosed = true;
+            state = SessionState.Closed;
+        }
+
+        internal void SendLastResponse(WebResponse response)
+        {
+            if (state != SessionState.Opened) return;
+
+            try {
+                var responseBytes = impl.OnWriteData(null, response);
+
+                state = SessionState.Closing;
+                stream.WriteAsync(responseBytes, 0, responseBytes.Length)
+                    .ContinueWith((e) =>
+                    {
+                        Close();
+                    });
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+                Close();
+            }
         }
 
         /// <summary>
@@ -88,6 +114,7 @@ namespace HttpServ
             var buffer = new byte[1024];
             var errorQuit = false;
 
+            state = SessionState.Opened;
             continueReceiving = true;
             
             while (isWebSocket || continueReceiving)
@@ -103,10 +130,16 @@ namespace HttpServ
                         var read = await stream.ReadAsync(buffer, 0, buffer.Length);
                         var segment = new ArraySegment<byte>(buffer, 0, read);
 
+                        if (read <= 0)
+                            throw new CloseSessionException();
+
+                        Console.WriteLine(Encoding.UTF8.GetString(segment.ToArray()));
+
                         Retry:
                         foreach (var request in impl.OnReceiveData(segment))
                         {
                             var response = server.ProcessRequest(this, request);
+
                             server.Postprocess(this, request, response);
                             var responseBytes = impl.OnWriteData(request, response);
 
@@ -126,13 +159,17 @@ namespace HttpServ
                                     goto Retry;
                             }
                         }
-
-                        if (read <= 0)
-                            errorQuit = true;
                     }
                 }
                 catch (ObjectDisposedException e)
                 {
+                    errorQuit = true;
+                }
+                catch (CloseSessionException e)
+                {
+                    if (e.response != null)
+                        SendLastResponse(e.response);
+
                     errorQuit = true;
                 }
                 catch (Exception e)
@@ -145,7 +182,8 @@ namespace HttpServ
                     break;
             }
 
-            Close();
+            if (state == SessionState.Opened)
+                Close();
         }
     }
 }

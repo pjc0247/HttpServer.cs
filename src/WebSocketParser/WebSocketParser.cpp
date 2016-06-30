@@ -104,11 +104,27 @@ namespace HttpServ {
 		array<Byte> ^ary = nullptr;
 
 		// extended
-		if (data->Count >= 128) {
-			throw gcnew NotImplementedException("payload16/64 is not supported currently");
+		if (data->Count >= 126 && data->Count <= USHRT_MAX) {
+			sWebsocketHeader16 header;
+
+			memset(&header, 0, sizeof(sWebsocketHeader16));
+
+			header.dummy1 = 0b10000000;
+			header.dummy1 |= opcode;
+
+			header.dummy2 = 0b00000000;
+			header.dummy2 |= 126;
+
+			header.payloadLength = data->Count;
+
+			ary = gcnew array<Byte>(
+				sizeof(sWebsocketHeader16) - sizeof(int));
+
+			System::Runtime::InteropServices::Marshal::Copy(
+				(System::IntPtr)&header, ary, 0, (int)sizeof(sWebsocketHeader16) - sizeof(int));
 		}
 		// compact
-		else {
+		else if (data->Count <= 125) {
 			sWebsocketHeaderCompact header;
 
 			memset(&header, 0, sizeof(sWebsocketHeaderCompact));
@@ -124,6 +140,9 @@ namespace HttpServ {
 
 			System::Runtime::InteropServices::Marshal::Copy(
 				(System::IntPtr)&header, ary, 0, (int)sizeof(sWebsocketHeaderCompact) - sizeof(int));
+		}
+		else {
+			throw gcnew NotImplementedException("payload64 is not supported currently");
 		}
 
 		return ary;

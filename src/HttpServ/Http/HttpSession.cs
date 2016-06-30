@@ -41,7 +41,7 @@ namespace HttpServ.Http
             if (response.content != null && response.headers.ContainsKey("Content-Length") == false)
                 response.headers["Content-Length"] = response.content.Length.ToString();
 
-            if (request.GetHeader("Connection") == "keep-alive")
+            if (request != null && request.GetHeader("Connection") == "keep-alive")
             {
                 response.headers["Keep-Alive"] = $"timeout=5, max={keepAliveCount}";
                 keepAliveCount--;

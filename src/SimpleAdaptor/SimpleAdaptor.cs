@@ -42,7 +42,9 @@ namespace HttpServ.Simple
             response.reasonPhrase = "OK";
             response.SetContent("Hello World! " + request.requestUri);
 
-            return response;
+            throw new CloseSessionException(response);
+
+            //return response;
         }
 
         /// <summary>
@@ -52,15 +54,16 @@ namespace HttpServ.Simple
         /// <returns>WEBSOCKET 리스폰스</returns>
         private WebSocket.WebSocketResponse OnWebSocketRequest(WebSocket.WebSocketRequest request)
         {
-            Console.WriteLine("SimpleAdaptor::OnWebSocketRequest");
+            Console.WriteLine("SimpleAdaptor::OnWebSocketRequest - " + request.opcode.ToString());
             Console.WriteLine(request.GetContentAsString());
 
             var response = new WebSocket.WebSocketResponse();
 
             response.SetContent("Hello World! ");
-            response.opcode = WebSocket.OpCode.Text;
+            response.opcode = WebSocket.OpCode.Close;
 
-            return response;
+            throw new CloseSessionException(response);
+            //return response;
         }
     }
 }

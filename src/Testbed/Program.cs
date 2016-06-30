@@ -16,10 +16,11 @@ namespace Testbed
         public static void Main(string[] args)
         {
             X509Certificate2 cert = new X509Certificate2("server.pfx", "instant");
-            var serv = ServerFactory.CreateHttp<StaticFileAdaptor>();
+            var serv = ServerFactory.CreateHttps<SimpleAdaptor>(cert);
             serv.AddMiddleware<HttpServ.WebSocket.Middlewares.WebSocketHandshaker>();
             serv.AddMiddleware<HttpServ.WebSocket.Middlewares.PingPong>();
-            serv.Open(9916);
+            serv.AddMiddleware<HttpServ.WebSocket.Middlewares.Close>();
+            serv.Open(443);
 
             Console.Read();
         }

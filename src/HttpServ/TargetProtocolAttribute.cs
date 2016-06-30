@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace HttpServ
 {
+    // NOT USED
     public class TargetProtocolAttribute : Attribute
     {
         public Type type { get; private set; }
