@@ -28,6 +28,10 @@ Core
     * [x] [먼저 끊기](src/HttpServ/Common/CloseSessionException.cs)
   * [x] [핑퐁](src/HttpServ/WebSocket/Middlewares/PingPong.cs)
   * [ ] 에코 서버
+  * [ ] 프레그먼트
+    * [x] 프레그먼트 메세지 수신(조합)
+    * [ ] 프레그먼트 사이에 오는 컨트롤 프레임 처리
+    * [ ] 프레그먼트 메세지 송신
 * [ ] 예외 처리
   * [ ] 파싱 에러 (400)
   * [x] 서버 익셉션 (500)
