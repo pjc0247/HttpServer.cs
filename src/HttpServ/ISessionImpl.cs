@@ -24,5 +24,12 @@ namespace HttpServ
         /// <param name="response">바이너리로 변환해야 하는 WebResponse</param>
         /// <returns>변환된 바이너리 배열</returns>
         byte[] OnWriteData(WebRequest request, WebResponse response);
+
+        /// <summary>
+        /// 이 메소드를 구현하여 에러 종료시에 어떤 응답을 보낼지 알려준다.
+        /// </summary>
+        /// <param name="e">발생한 익셉션</param>
+        /// <returns>마지막 패킷</returns>
+        WebResponse OnErrorClose(Exception e);
     }
 }

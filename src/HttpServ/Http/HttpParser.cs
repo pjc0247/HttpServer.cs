@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace HttpServ.Http
 {
+    using Exceptions;
+
     public enum HttpParseResult
     {
         Processing,
@@ -46,14 +48,31 @@ namespace HttpServ.Http
         public Action<byte[]> OnContent { get; set; }
         public Action OnReset { get; set; }
 
+        public bool allowContentWithoutLength = false;
+
         public HttpParser()
         {
             buffer = new byte[] { };
+            contentBuffer = new byte[] { };
+
+            OnReset += () =>
+            {
+                contentBuffer = new byte[] { };
+            };
             OnHeader += (key, value) =>
             {
                 if (key == "Content-Length")
                     contentLength = int.Parse(value);
             };
+        }
+
+        public void ForceSkipRequestLine()
+        {
+            state = HttpParseState.BeginHeaderKey;
+        }
+        public void ForceAllowContentWithoutLength()
+        {
+            allowContentWithoutLength = true;
         }
 
         public HttpParseResult Write(IEnumerable<byte> chunk)
@@ -103,7 +122,8 @@ namespace HttpServ.Http
                         break;
 
                     case HttpParseState.RecvContent:
-                        if (contentLength.Value < buffer.Length)
+                        if (contentLength.HasValue &&
+                            contentLength.Value < buffer.Length)
                         {
                             var slice = buffer.Take(contentLength.Value).ToArray();
                             buffer = buffer.Skip(contentLength.Value).ToArray();
@@ -117,7 +137,8 @@ namespace HttpServ.Http
                             buffer = new byte[] { };
                         }
 
-                        if (contentLength == contentBuffer.Length)
+                        if (contentLength.HasValue &&
+                            contentLength == contentBuffer.Length)
                         {
                             OnContent?.Invoke(contentBuffer);
                             state = HttpParseState.End;
@@ -216,8 +237,12 @@ namespace HttpServ.Http
 
                 if (contentLength.HasValue)
                     state = HttpParseState.RecvContent;
-                else
-                    state = HttpParseState.End;
+                else {
+                    if (allowContentWithoutLength)
+                        state = HttpParseState.RecvContent;
+                    else
+                        state = HttpParseState.End;
+                }
                 
                 return true;
             }

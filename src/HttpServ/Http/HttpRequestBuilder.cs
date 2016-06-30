@@ -6,21 +6,28 @@ using System.Threading.Tasks;
 
 namespace HttpServ.Http
 {
+    using Exceptions;
+
     public class HttpRequestBuilder
     {
         public HttpRequest request { get; internal set; }
         public HttpParser parser { get; private set; }
 
-        public HttpRequestBuilder()
+        private int maxContentSize { get; set; }
+        private int contentSize { get; set; }
+
+        public HttpRequestBuilder(int maxContentSize = int.MaxValue)
         {
-            request = new HttpRequest();
-            parser = new HttpParser();
+            this.request = new HttpRequest();
+            this.parser = new HttpParser();
+            this.maxContentSize = maxContentSize;
 
             parser.OnReset += OnReset;
             parser.OnHttpMethod += OnMethod;
             parser.OnRequestUri += OnRequestUri;
             parser.OnHeader += OnHeader;
             parser.OnContent += OnContent;
+            parser.OnContentChunk += OnContentChunk;
         }
 
         public IEnumerable<HttpRequest> Write(IEnumerable<byte> chunk)
@@ -41,6 +48,7 @@ namespace HttpServ.Http
         private void OnReset()
         {
             request = new HttpRequest();
+            contentSize = 0;
         }
         private void OnMethod(string receivedMethod)
         {
@@ -57,6 +65,13 @@ namespace HttpServ.Http
         private void OnContent(byte[] receivedContent)
         {
             request.content = receivedContent;
+        }
+        private void OnContentChunk(byte[] receivedChunk)
+        {
+            contentSize += receivedChunk.Length;
+
+            if (contentSize >= maxContentSize)
+                throw new RequestTooLongException();
         }
     }
 }

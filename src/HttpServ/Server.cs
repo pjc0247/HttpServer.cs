@@ -16,6 +16,8 @@ namespace HttpServ
     public class Server
     {
         internal IAdaptor adaptor { get; private set; }
+        internal Config config { get; private set; }
+
         private List<IMiddleware> middlewares { get; set; }
         private TcpListener listener { get; set; }
         private Thread acceptWorker { get; set; }
@@ -30,6 +32,7 @@ namespace HttpServ
         {
             this.adaptor = adaptor;
             this.middlewares = new List<IMiddleware>();
+            this.config = new Config();
 
             if (cert != null)
             {

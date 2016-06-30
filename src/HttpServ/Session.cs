@@ -40,7 +40,7 @@ namespace HttpServ
             this.stream = stream;
             this.state = SessionState.Ready;
 
-            this.impl = new HttpSession();
+            this.impl = new HttpSession(server);
             impl.session = this;
         }
 
@@ -175,6 +175,11 @@ namespace HttpServ
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
+
+                    var response = impl.OnErrorClose(e);
+                    if (response != null)
+                        SendLastResponse(response);
+
                     errorQuit = true;
                 }
 

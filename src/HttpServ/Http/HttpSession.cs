@@ -13,9 +13,9 @@ namespace HttpServ.Http
         private HttpRequestBuilder builder { get; set; }
         private int keepAliveCount = 100;
 
-        public HttpSession()
+        public HttpSession(Server server)
         {
-            builder = new HttpRequestBuilder();
+            builder = new HttpRequestBuilder(server.config.maxRequestSize);
         }
 
         public IEnumerable<WebRequest> OnReceiveData(ArraySegment<byte> data)
@@ -51,6 +51,27 @@ namespace HttpServ.Http
             }
 
             return BuildHttpResponse(response);
+        }
+
+        public WebResponse OnErrorClose(Exception e)
+        {
+            var response = new HttpResponse(ResponseCode.InternalServerError);
+
+            try
+            {
+                // 콜백 지정하지 않았을 경우 자동으로 catch에서처리됨
+                response.SetContent(
+                    session.server.config.onInternalServerError(e));
+            }
+            catch(Exception)
+            {
+                if (session.server.config.isDebugMode)
+                    response.SetContent(e.ToString());
+                else
+                    response.SetContent("<h1>Internal Server Error</h1><hr>");
+            }
+
+            return response;
         }
 
         private byte[] BuildHttpResponse(HttpResponse response)

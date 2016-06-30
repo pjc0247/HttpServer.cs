@@ -34,6 +34,8 @@ namespace HttpServ.Http
         Conflict = 409,
         Gone = 410,
         LengthRequired = 411,
+        PayloadTooLarge = 413,
+        UriTooLong = 414,
 
         InternalServerError = 500,
         NotImplemented = 501,

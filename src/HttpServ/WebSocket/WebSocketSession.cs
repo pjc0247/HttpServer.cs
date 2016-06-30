@@ -48,6 +48,7 @@ namespace HttpServ.WebSocket
             else
                 buffer = buffer.Concat(data).ToArray();
 
+            // 이번 패킷에 대해서 아직 헤더 파싱 안됨
             if (header == null)
             {
                 header = WebSocketParser.Parse(
@@ -60,6 +61,8 @@ namespace HttpServ.WebSocket
                 buffer = buffer.Skip(header.payloadOffset).ToArray();
             }
 
+            // 버퍼가 헤더의 payload 길이보다 충분함
+            //    -> 데이터 다 받은 경우
             if (buffer.Length >= header.payloadLength)
             {
                 var payload = buffer.Take(header.payloadLength);
@@ -101,6 +104,12 @@ namespace HttpServ.WebSocket
                 new ArraySegment<byte>(response.content), (byte)response.opcode);
 
             return headerBytes.Concat(_response.content).ToArray();
+        }
+
+        public WebResponse OnErrorClose(Exception e)
+        {
+            return new WebSocketCloseResponse(
+                StatusCode.ServerError, "Close connection due to an exception.");
         }
 
         private IEnumerable<byte> Decode(IEnumerable<byte> data)

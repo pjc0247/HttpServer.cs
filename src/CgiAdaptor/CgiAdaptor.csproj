@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{607E5769-5DCC-447D-BBF1-AD833A8998B0}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{F439341C-9F6D-4808-88D9-7F6CB9913D25}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Testbed</RootNamespace>
-    <AssemblyName>Testbed</AssemblyName>
+    <RootNamespace>CgiAdaptor</RootNamespace>
+    <AssemblyName>CgiAdaptor</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -29,9 +29,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,25 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="CgiAdaptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CgiAdaptor\CgiAdaptor.csproj">
-      <Project>{f439341c-9f6d-4808-88d9-7f6cb9913d25}</Project>
-      <Name>CgiAdaptor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HttpServ\HttpServ.csproj">
       <Project>{bdcd199c-494a-4461-9b28-3a63aade7be0}</Project>
       <Name>HttpServ</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SimpleAdaptor\SimpleAdaptor.csproj">
-      <Project>{6981868a-1ff8-40bd-9fec-5d67e99eb9b6}</Project>
-      <Name>SimpleAdaptor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StaticFileAdaptor\StaticFileAdaptor.csproj">
-      <Project>{77da6f28-d347-4cc8-aaff-a2fff0e881f5}</Project>
-      <Name>StaticFileAdaptor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
