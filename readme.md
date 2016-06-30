@@ -25,7 +25,7 @@ Core
   * [x] [fin 0/1 (분할된 패킷)](src/HttpServ/WebSocket/WebSocketSession.cs#L68-L85)
   * [ ] 연결 관리
     * [ ] 먼저 보내기
-    * [ ] 먼저 끊기
+    * [x] 먼저 끊기
   * [x] [핑퐁](src/HttpServ/WebSocket/Middlewares/PingPong.cs)
   * [ ] 에코 서버
 * [ ] 예외 처리
