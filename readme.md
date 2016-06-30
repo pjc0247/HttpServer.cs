@@ -43,7 +43,9 @@ Adaptor
 * [ ] CSX Adaptor 제작
 * [x] [Static Adaptor 제작 (단순 파일 서버)](src/StaticFileAdaptor/Program.cs)
 * [ ] OWIN Adaptor (Nancy)
-
+* [ ] CGI
+  * [x] PHP
+  
 Application
 ----
 * [ ] 간단하게 프로그래밍 가능한 어플리케이션 레이어 구성
