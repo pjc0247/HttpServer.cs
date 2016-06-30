@@ -20,7 +20,7 @@ Core
     * [ ] Payload64
   * [x] 프레임 조립
     * [x] Payload7
-    * [ ] Payload16
+    * [x] Payload16
     * [ ] Payload64  
   * [x] [fin 0/1 (분할된 패킷)](src/HttpServ/WebSocket/WebSocketSession.cs#L68-L85)
   * [ ] 연결 관리
