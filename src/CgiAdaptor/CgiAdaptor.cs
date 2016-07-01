@@ -79,14 +79,8 @@ namespace HttpServ.CGI
 
             p.Start();
 
-            if (p.WaitForExit(1000))
-            {
-
-            }
-            else
-            {
+            if (p.WaitForExit(1000) == false)
                 throw new InvalidOperationException("CGI::TimeOut");
-            }
 
             Console.WriteLine("END PHP");
 
