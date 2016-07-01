@@ -38,12 +38,13 @@ namespace HttpServ.Http
             var request = (HttpRequest)_request;
             var response = (HttpResponse)_response;
 
-            if (response.content != null && response.headers.ContainsKey("Content-Length") == false)
-                response.headers["Content-Length"] = response.content.Length.ToString();
+            if (response.content != null &&
+                response.headers.ContainsKey(HttpKnownHeaders.ContentLength) == false)
+                response.headers[HttpKnownHeaders.ContentLength] = response.content.Length.ToString();
 
-            if (request != null && request.GetHeader("Connection") == "keep-alive")
+            if (request != null && request.GetHeader(HttpKnownHeaders.Connection) == "keep-alive")
             {
-                response.headers["Keep-Alive"] = $"timeout=5, max={keepAliveCount}";
+                response.headers[HttpKnownHeaders.KeepAlive] = $"timeout=5, max={keepAliveCount}";
                 keepAliveCount--;
 
                 if (keepAliveCount > 0)

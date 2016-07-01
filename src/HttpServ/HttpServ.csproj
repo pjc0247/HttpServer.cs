@@ -52,6 +52,7 @@
     <Compile Include="Configs\Config.Http.cs" />
     <Compile Include="Configs\Config.Session.cs" />
     <Compile Include="Http\Exceptions\RequestTooLongException.cs" />
+    <Compile Include="Http\HttpKnownHeaders.cs" />
     <Compile Include="Http\HttpMiddleware.cs" />
     <Compile Include="Http\Exceptions\HttpParseException.cs" />
     <Compile Include="Http\HttpRequest.cs" />
@@ -77,6 +78,8 @@
     <Compile Include="Http\ResponseEmitter.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="WebSocket\OpCode.cs" />
+    <Compile Include="WebSocket\StatusCode.cs" />
+    <Compile Include="WebSocket\WebSocketCloseResponse.cs" />
     <Compile Include="WebSocket\WebSocketMiddleware.cs" />
     <Compile Include="WebSocket\WebSocketRequest.cs" />
     <Compile Include="WebSocket\WebSocketResponse.cs" />

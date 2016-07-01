@@ -17,8 +17,8 @@ namespace HttpServ.WebSocket.Middlewares
 
         public override HttpResponse OnPreprocess(Session session, HttpRequest request)
         {
-            if (request.GetHeader("Connection") != "Upgrade" ||
-                request.GetHeader("Upgrade") != "websocket")
+            if (request.GetHeader(HttpKnownHeaders.Connection) != "Upgrade" ||
+                request.GetHeader(HttpKnownHeaders.Upgrade) != "websocket")
                 return null;
 
             var key = request.GetHeader("Sec-WebSocket-Key");
@@ -30,8 +30,8 @@ namespace HttpServ.WebSocket.Middlewares
             var response = new HttpResponse();
 
             response.code = ResponseCode.SwitchingProtocols;
-            response.headers["Upgrade"] = "websocket";
-            response.headers["Connection"] = "Upgrade";
+            response.headers[HttpKnownHeaders.Connection] = "Upgrade";
+            response.headers[HttpKnownHeaders.Upgrade] = "websocket";
             response.headers["Sec-WebSocket-Accept"] = acceptKey;
 
             // SUBPROTOCOL NOT SUPPORTED YET

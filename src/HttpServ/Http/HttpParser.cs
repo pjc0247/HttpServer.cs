@@ -61,7 +61,7 @@ namespace HttpServ.Http
             };
             OnHeader += (key, value) =>
             {
-                if (key == "Content-Length")
+                if (key == HttpKnownHeaders.ContentLength)
                     contentLength = int.Parse(value);
             };
         }

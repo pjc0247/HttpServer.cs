@@ -17,7 +17,7 @@ namespace HttpServ.Http.Middlewares
             if (response.content == null) return;
             if (response.content.Length <= GzipMinSize) return;
 
-            var accept = request.GetHeader("Accept-Encoding");
+            var accept = request.GetHeader(HttpKnownHeaders.AcceptEncoding);
 
             if (accept.Contains("gzip,"))
             {
@@ -28,8 +28,8 @@ namespace HttpServ.Http.Middlewares
 
                     var zippped = memory.ToArray();
                     response.content = zippped;
-                    response.headers["Content-Encoding"] = "gzip";
-                    response.headers["Content-Length"] = zippped.Length.ToString();
+                    response.headers[HttpKnownHeaders.ContentEncoding] = "gzip";
+                    response.headers[HttpKnownHeaders.ContentLength] = zippped.Length.ToString();
                 }
             }
         }
