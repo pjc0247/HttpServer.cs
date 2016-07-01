@@ -33,6 +33,8 @@ using System.Threading.Tasks;
 */
 namespace HttpServ.WebSocket
 {
+    using Exceptions;
+
     public class WebSocketSession : ISessionImpl
     {
         public Session session { get; set; }
@@ -55,8 +57,13 @@ namespace HttpServ.WebSocket
                     new ArraySegment<byte>(buffer));
                 contentBuffer = new byte[] { };
 
+                var maxPayloadSize = session.server.config.maxWebSocketPayloadSize;
+
+                // 들어온 데이터가 헤더 만들기 충분하지 않음
                 if (header == null)
                     yield break;
+                if (contentBuffer.Length + header.payloadLength >= maxPayloadSize)
+                    throw new PayloadTooBigException();
 
                 buffer = buffer.Skip(header.payloadOffset).ToArray();
             }

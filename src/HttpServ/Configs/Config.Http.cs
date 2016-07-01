@@ -8,7 +8,7 @@ namespace HttpServ
 {
     public partial class Config
     {
-        public int maxRequestSize { get; set; } = 16;
+        public int maxHttpRequestSize { get; set; } = 16;
 
         public bool isDebugMode { get; set; } = false;
 

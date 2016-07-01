@@ -15,7 +15,7 @@ namespace HttpServ.Http
 
         public HttpSession(Server server)
         {
-            builder = new HttpRequestBuilder(server.config.maxRequestSize);
+            builder = new HttpRequestBuilder(server.config.maxHttpRequestSize);
         }
 
         public IEnumerable<WebRequest> OnReceiveData(ArraySegment<byte> data)
