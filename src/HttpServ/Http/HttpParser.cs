@@ -31,6 +31,8 @@ namespace HttpServ.Http
 
     public class HttpParser
     {
+        private static readonly int MaxHttpMethodSize = 8;
+
         public byte[] buffer { get; private set; }
 
         private int offset { get; set; }
@@ -173,6 +175,9 @@ namespace HttpServ.Http
 
             for (int i = 3; i < buffer.Length; i++)
             {
+                if (i-3 >= MaxHttpMethodSize)
+                    throw new HttpParseException("HTTP Method too long");
+
                 if (buffer[i] == ' ')
                 {
                     var method = buffer.Take(i).ToArray();

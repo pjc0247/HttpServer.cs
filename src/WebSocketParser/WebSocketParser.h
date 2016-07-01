@@ -15,6 +15,7 @@ namespace HttpServ {
 
 		int payloadOffset;
 
+		bool IsControlFrame();
 		Byte GetMaskKeyAt(int idx);
 	};
 

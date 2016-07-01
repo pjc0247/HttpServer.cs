@@ -73,11 +73,16 @@ namespace HttpServ.WebSocket
                     var request = new WebSocketRequest();
                     IEnumerable<byte> content = null;
 
-                    if (contentBuffer.Length > 0)
-                        content = contentBuffer.Concat(payload);
+                    if (header.IsControlFrame())
+                        request.content = Decode(payload).ToArray();
                     else
-                        content = payload;
-                    request.content = Decode(content).ToArray();
+                    {
+                        if (contentBuffer.Length > 0)
+                            content = contentBuffer.Concat(payload);
+                        else
+                            content = payload;
+                        request.content = Decode(content).ToArray();
+                    }
                     request.opcode = (OpCode)header.opcode;
 
                     header = null;

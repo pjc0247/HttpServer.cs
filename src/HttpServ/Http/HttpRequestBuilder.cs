@@ -61,6 +61,19 @@ namespace HttpServ.Http
         private void OnHeader(string key, string value)
         {
             request.headers[key] = value;
+
+            if (key == HttpKnownHeaders.ContentLength)
+            {
+                int length;
+
+                if (int.TryParse(value, out length))
+                {
+                    if (length >= maxContentSize)
+                        throw new RequestTooLongException();
+                }
+                else
+                    throw new HttpParseException();
+            }
         }
         private void OnContent(byte[] receivedContent)
         {

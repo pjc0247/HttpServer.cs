@@ -16,5 +16,13 @@ namespace HttpServ.Http.Exceptions
 
             this.response = response;
         }
+        public HttpParseException(string reason)
+        {
+            var response = new HttpResponse();
+            response.SetContent(reason);
+            response.code = ResponseCode.BadRequest;
+
+            this.response = response;
+        }
     }
 }

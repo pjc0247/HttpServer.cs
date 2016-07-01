@@ -26,6 +26,7 @@ namespace HttpServ
 
         private bool isWebSocket { get; set; }
         private bool continueReceiving { get; set; }
+        private int lastRequestTime { get; set; }
 
         public SessionState state { get; internal set; }
 
@@ -116,7 +117,8 @@ namespace HttpServ
 
             state = SessionState.Opened;
             continueReceiving = true;
-            
+            lastRequestTime = Environment.TickCount;
+
             while (isWebSocket || continueReceiving)
             {
                 continueReceiving = false;
@@ -126,7 +128,13 @@ namespace HttpServ
                     using (var cts = new CancellationTokenSource(5000))
                     {
                         if (isWebSocket == false)
+                        {
                             cts.Token.Register(() => { Close(); });
+
+                            if (Environment.TickCount - lastRequestTime >= server.config.requestTimeout)
+                                throw new RequestTimeoutException();
+                        }
+
                         var read = await stream.ReadAsync(buffer, 0, buffer.Length);
                         var segment = new ArraySegment<byte>(buffer, 0, read);
 
@@ -158,6 +166,8 @@ namespace HttpServ
                                 if (segment.Count > 0)
                                     goto Retry;
                             }
+
+                            lastRequestTime = Environment.TickCount;
                         }
                     }
                 }

@@ -31,6 +31,9 @@ namespace HttpServ {
 		Byte key = *((char*)&v + (i % 4));
 		return key;
 	}
+	bool WebSocketHeader::IsControlFrame() {
+		return opcode & 0x8;
+	}
 
 	WebSocketHeader ^WebSocketParser::Parse(ArraySegment<Byte> ^data) {
 		auto header = gcnew WebSocketHeader;
@@ -65,7 +68,7 @@ namespace HttpServ {
 			*/
 		}
 		else if (header->payloadLength == 126) {
-			if (data->Count <= sizeof(sWebsocketHeader16))
+			if (data->Count < sizeof(sWebsocketHeader16))
 				return nullptr;
 
 			sWebsocketHeader16 extended;

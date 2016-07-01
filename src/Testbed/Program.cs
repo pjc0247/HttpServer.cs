@@ -9,6 +9,8 @@ using HttpServ.Simple;
 using HttpServ.StaticFileAdaptor;
 using System.Security.Cryptography.X509Certificates;
 
+using HttpServ.WebSocket;
+
 namespace Testbed
 {
     public class Program
@@ -17,9 +19,7 @@ namespace Testbed
         {
             X509Certificate2 cert = new X509Certificate2("server.pfx", "instant");
             var serv = ServerFactory.CreateHttp<HttpServ.CGI.CgiAdaptor>();
-            serv.AddMiddleware<HttpServ.WebSocket.Middlewares.WebSocketHandshaker>();
-            serv.AddMiddleware<HttpServ.WebSocket.Middlewares.PingPong>();
-            serv.AddMiddleware<HttpServ.WebSocket.Middlewares.Close>();
+            serv.EnableWebSocket();
             serv.Open(443);
 
             Console.Read();

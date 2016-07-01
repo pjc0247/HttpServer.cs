@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace HttpServ
 {
-    public partial class Config
+    public class RequestTimeoutException : Exception
     {
-        public int maxBufferSize { get; set; }
-
-        public int requestTimeout { get; set; } = 8000;
+        public RequestTimeoutException()
+        {
+        }
     }
 }
