@@ -68,6 +68,7 @@ Creat Server
 var serv = ServerFactory.CreateHttp<SimpleAdaptor>();
 
 // HTTPS SERVER
+var cert = new X509Certificate2("server.pfx", "password");
 var serv = ServerFactory.CreateHttps<SimpleAdaptor>(cert);
 
 serv.Open(9916);
