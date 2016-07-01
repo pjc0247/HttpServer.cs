@@ -39,6 +39,8 @@ Core
   * [ ] 마스크 없는 웹소켓 패킷
   * [x] 너무 큰 요청
   * [ ] 리퀘스트 타임아웃 (408)
+    * [x] HTTP
+    * [ ] WebSocket
 * [x] HTTPS
 
 Adaptor
