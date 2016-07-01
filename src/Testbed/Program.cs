@@ -17,7 +17,7 @@ namespace Testbed
     {
         public static void Main(string[] args)
         {
-            X509Certificate2 cert = new X509Certificate2("server.pfx", "instant");
+            var cert = new X509Certificate2("server.pfx", "instant");
             var serv = ServerFactory.CreateHttp<HttpServ.CGI.CgiAdaptor>();
             serv.EnableWebSocket();
             serv.Open(443);

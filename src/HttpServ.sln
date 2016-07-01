@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StaticFileAdaptor", "Static
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CgiAdaptor", "CgiAdaptor\CgiAdaptor.csproj", "{F439341C-9F6D-4808-88D9-7F6CB9913D25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpServ.UnitTests", "UnitTests\HttpServ.UnitTests.csproj", "{96AC1788-A532-481B-916D-F91F80BB9C75}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpServ.UnitTests", "HttpServ.UnitTests\HttpServ.UnitTests.csproj", "{96AC1788-A532-481B-916D-F91F80BB9C75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

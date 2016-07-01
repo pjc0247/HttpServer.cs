@@ -52,7 +52,8 @@
     <Compile Include="Common\WebResponse.cs" />
     <Compile Include="Configs\Config.Http.cs" />
     <Compile Include="Configs\Config.Session.cs" />
-    <Compile Include="Http\Exceptions\RequestTooLongException.cs" />
+    <Compile Include="Configs\Config.WebSocket.cs" />
+    <Compile Include="Http\Exceptions\RequestTooBigException.cs" />
     <Compile Include="Http\HttpKnownHeaders.cs" />
     <Compile Include="Http\HttpMiddleware.cs" />
     <Compile Include="Http\Exceptions\HttpParseException.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="SessionState.cs" />
     <Compile Include="TargetProtocolAttribute.cs" />
     <Compile Include="WebSocket\Exceptions\CloseWebSocketException.cs" />
+    <Compile Include="WebSocket\Exceptions\PayloadTooBigException.cs" />
     <Compile Include="WebSocket\Middlewares\Close.cs" />
     <Compile Include="WebSocket\Middlewares\PingPong.cs" />
     <Compile Include="WebSocket\Middlewares\WebSocketHandshaker.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="Http\ResponseEmitter.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="WebSocket\OpCode.cs" />
+    <Compile Include="WebSocket\RequestValidator.cs" />
     <Compile Include="WebSocket\StatusCode.cs" />
     <Compile Include="WebSocket\WebSocketCloseResponse.cs" />
     <Compile Include="WebSocket\WebSocketMiddleware.cs" />

@@ -64,6 +64,7 @@ namespace HttpServ.WebSocket
                     yield break;
                 if (contentBuffer.Length + header.payloadLength >= maxPayloadSize)
                     throw new PayloadTooBigException();
+                header.Validate();
 
                 buffer = buffer.Skip(header.payloadOffset).ToArray();
             }

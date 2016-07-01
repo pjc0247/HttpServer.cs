@@ -69,7 +69,7 @@ namespace HttpServ.Http
                 if (int.TryParse(value, out length))
                 {
                     if (length >= maxContentSize)
-                        throw new RequestTooLongException();
+                        throw new RequestTooBigException();
                 }
                 else
                     throw new HttpParseException();
@@ -84,7 +84,7 @@ namespace HttpServ.Http
             contentSize += receivedChunk.Length;
 
             if (contentSize >= maxContentSize)
-                throw new RequestTooLongException();
+                throw new RequestTooBigException();
         }
     }
 }

@@ -42,7 +42,7 @@ namespace HttpServ.CGI
             var env = p.StartInfo.EnvironmentVariables;
 
             var tokens = request.requestUri.Split(new char[] { '?' }, 2);
-
+            
             if (tokens.Length != 2)
                 env["QUERY_STRING"] = "";
             else
@@ -51,13 +51,18 @@ namespace HttpServ.CGI
             env["REQUEST_URI"] = request.requestUri;
             env["DOCUMENT_URI"] = "/";
 
-            env["SCRIPT_FILENAME"] = "a.php";
+            var scriptPath = request.path;
+            if (scriptPath.EndsWith("/"))
+                scriptPath += "index.php";
+            scriptPath = scriptPath.Substring(1);
+
+            env["SCRIPT_FILENAME"] = scriptPath;
             env["SCRIPT_NAME"] = "IM JINWOO";
 
             env["GATEWAY_INTERFACE"] = "CGI/1.1";
 
             env["SERVER_SOFTWARE"] = "ASDF";
-            env["REDIRECT_STATUS"] = "";
+            env["REDIRECT_STATUS"] = "CGI";
 
             env["SERVER_ADDR"] = "127.0.0.1";
             env["SERVER_NAME"] = "JIWNOOSERVER";
