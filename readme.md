@@ -42,6 +42,8 @@ Core
     * [x] HTTP
     * [ ] WebSocket
 * [x] HTTPS
+* [ ] 송신 버퍼링
+* [ ] 스트리밍 송신
 
 Adaptor
 ----
