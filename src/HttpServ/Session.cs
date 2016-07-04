@@ -98,8 +98,15 @@ namespace HttpServ
             if (upgradeImplTo != null)
                 throw new InvalidOperationException("already upgrading-state");
 
-            isWebSocket = true;
-            upgradeImplTo = new WebSocketSession();
+            bool accepted = server.adaptor.OnUpgradeRequest(this, typeof(WebSocketSession));
+
+            if (accepted)
+            {
+                isWebSocket = true;
+                upgradeImplTo = new WebSocketSession();
+            }
+            else
+                throw new InvalidOperationException("upgrade not accepted"); // TODO
         }
         /// <summary>
         /// 연속된 다음 요청을 처리하도록 한다.

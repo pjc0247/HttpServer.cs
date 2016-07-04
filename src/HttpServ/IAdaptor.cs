@@ -20,6 +20,8 @@ namespace HttpServ
         /// <param name="session"></param>
         void OnClose(Session session);
 
+        bool OnUpgradeRequest(Session session, Type upgradeTo);
+
         /// <summary>
         /// 이 메소드를 상속받아 요청에 대한 응답을 처리합니다.
         /// </summary>

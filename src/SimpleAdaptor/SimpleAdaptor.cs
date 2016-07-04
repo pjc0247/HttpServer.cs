@@ -17,6 +17,11 @@ namespace HttpServ.Simple
             Console.WriteLine("OnClose");
         }
 
+        public bool OnUpgradeRequest(Session session, Type upgradeTo)
+        {
+            return true;
+        }
+
         public WebResponse OnRequest(Session session, WebRequest req)
         {
             if (req is Http.HttpRequest)

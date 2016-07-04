@@ -17,6 +17,10 @@ namespace HttpServ.StaticFileAdaptor
         {
             Console.WriteLine("OnClose");
         }
+        public bool OnUpgradeRequest(Session session, Type upgradeTo)
+        {
+            return true;
+        }
 
         public WebResponse OnRequest(Session session, WebRequest req)
         {
