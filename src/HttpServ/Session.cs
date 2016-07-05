@@ -12,6 +12,7 @@ namespace HttpServ
 {
     using WebSocket;
     using Http;
+    using Http2;
 
     public class Session
     {
@@ -24,7 +25,7 @@ namespace HttpServ
         private TcpClient sock { get; set; }
         private Stream stream { get; set; }
 
-        private bool isWebSocket { get; set; }
+        private bool isPersistentSession { get; set; }
         private bool continueReceiving { get; set; }
         private int lastRequestTime { get; set; }
 
@@ -67,6 +68,22 @@ namespace HttpServ
             state = SessionState.Closed;
         }
 
+        public async Task Send(WebResponse response)
+        {
+            await SendAsync(null, response);
+        }
+        public Task SendAsync(WebResponse response)
+        {
+            return SendAsync(null, response);
+        }
+        private Task SendAsync(WebRequest request, WebResponse response)
+        {
+            server.Postprocess(this, null, response);
+            var responseBytes = impl.OnWriteData(request, response);
+
+            return stream.WriteAsync(responseBytes, 0, responseBytes.Length);
+        }
+
         internal void SendLastResponse(WebResponse response)
         {
             if (state != SessionState.Opened) return;
@@ -102,12 +119,26 @@ namespace HttpServ
 
             if (accepted)
             {
-                isWebSocket = true;
+                isPersistentSession = true;
                 upgradeImplTo = new WebSocketSession();
             }
             else
                 throw new InvalidOperationException("upgrade not accepted"); // TODO
         }
+
+        internal void UpgradeToHttp2()
+        {
+            bool accepted = server.adaptor.OnUpgradeRequest(this, typeof(Http2Session));
+
+            if (accepted)
+            {
+                isPersistentSession = true;
+                impl = new Http2Session();
+            }
+            else
+                throw new InvalidOperationException("upgrade not accepted"); // TODO
+        }
+
         /// <summary>
         /// 연속된 다음 요청을 처리하도록 한다.
         /// 이 메소드가 호출되지 않으면 응답 후 연결이 끊어진다.
@@ -126,7 +157,7 @@ namespace HttpServ
             continueReceiving = true;
             lastRequestTime = Environment.TickCount;
 
-            while (isWebSocket || continueReceiving)
+            while (isPersistentSession || continueReceiving)
             {
                 continueReceiving = false;
 
@@ -134,7 +165,7 @@ namespace HttpServ
                 {
                     using (var cts = new CancellationTokenSource(5000))
                     {
-                        if (isWebSocket == false)
+                        if (isPersistentSession == false)
                         {
                             cts.Token.Register(() => { Close(); });
 
@@ -155,11 +186,9 @@ namespace HttpServ
                         {
                             var response = server.ProcessRequest(this, request);
 
-                            server.Postprocess(this, request, response);
-                            var responseBytes = impl.OnWriteData(request, response);
-
-                            await stream.WriteAsync(responseBytes, 0, responseBytes.Length);
-
+                            if (response != null)
+                                await SendAsync(request, response);
+                            
                             if (upgradeImplTo != null)
                             {
                                 var upgradable = impl as IProtocolUpgradable;

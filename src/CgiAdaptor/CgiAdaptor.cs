@@ -20,6 +20,9 @@ namespace HttpServ.CGI
         }
         public bool OnUpgradeRequest(Session session, Type upgradeTo)
         {
+            if (upgradeTo == typeof(WebSocket.WebSocketSession))
+                return false;
+
             return true;
         }
 
@@ -27,10 +30,8 @@ namespace HttpServ.CGI
         {
             if (req is Http.HttpRequest)
                 return OnHttpRequest((Http.HttpRequest)req);
-            else if (req is WebSocket.WebSocketRequest)
+            else
                 throw new NotImplementedException("");
-
-            return null;
         }
 
         private Http.HttpResponse OnHttpRequest(Http.HttpRequest request)

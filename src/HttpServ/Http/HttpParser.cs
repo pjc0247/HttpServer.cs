@@ -51,6 +51,7 @@ namespace HttpServ.Http
         public Action OnReset { get; set; }
 
         public bool allowContentWithoutLength = false;
+        public bool http2Preface = false;
 
         public HttpParser()
         {
@@ -59,7 +60,16 @@ namespace HttpServ.Http
 
             OnReset += () =>
             {
+                http2Preface = false;
                 contentBuffer = new byte[] { };
+            };
+            OnHttpMethod += (method) =>
+            {
+                if (method == "PRI")
+                {
+                    http2Preface = true;
+                    contentLength = 6;
+                }
             };
             OnHeader += (key, value) =>
             {
