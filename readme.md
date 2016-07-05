@@ -53,7 +53,7 @@ Core
     * [ ] Dynamic Table
     * [x] String Decoding
   * [ ] Stream
-  * [ ] Ping
+  * [x] Ping
   * [ ] Setting
   * [ ] Data
 
