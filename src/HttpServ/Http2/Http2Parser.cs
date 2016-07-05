@@ -68,13 +68,7 @@ namespace HttpServ.Http2
                     Buffer.BlockCopy(data.Array, data.Offset + i + 2, payload, 0, length);
                     
                     if (huff)
-                    {
                         payload  = Huffman.Convert.Decode(payload);
-                    }
-                    else
-                    {
-                        
-                    }
                     
                     Console.WriteLine(Encoding.UTF8.GetString(payload));
 

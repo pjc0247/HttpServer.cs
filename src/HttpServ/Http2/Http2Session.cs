@@ -19,6 +19,12 @@ namespace HttpServ.Http2
             if (header == null)
                 yield break;
 
+            HStream stream = null;
+
+            if (header.streamId != 0 &&
+                streams.ContainsKey(header.streamId))
+                stream = streams[header.streamId];
+
             if (header.type == Http2FrameType.Setting)
                 yield return new Http2SettingRequest();
             else if (header.type == Http2FrameType.Headers)
@@ -28,6 +34,9 @@ namespace HttpServ.Http2
 
                 if (headers == null)
                     yield break;
+
+                if (streams.ContainsKey(header.streamId) == false)
+                    stream = streams[header.streamId] = new HStream();
 
             }
         }

@@ -13,6 +13,13 @@ namespace HttpServ.Http2
         public ushort flags { get; set; }
         public int streamId { get; set; }
 
+        public bool endStream
+        {
+            get
+            {
+                return (flags & 0x1) != 0;
+            }
+        }
         public bool hasPadding
         {
             get

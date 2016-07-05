@@ -17,5 +17,18 @@ namespace HttpServ.Http2
 
             return data;
         }
+
+        public static byte[] RstStream(Http2RstStreamResponse response)
+        {
+            var data = new byte[10];
+
+            data[3] = (int)Http2FrameType.RstStream;
+            data[4] = 0;
+
+            Buffer.BlockCopy(
+                data, 10, BitConverter.GetBytes(response.errorCode), 0, 4);
+
+            return data;
+        }
     }
 }
