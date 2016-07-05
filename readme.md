@@ -43,6 +43,12 @@ Core
     * [ ] WebSocket
 * [x] HTTPS
 * [ ] 스트리밍 송신
+* [ ] HTTP2.0
+  * [ ] HPACK
+  * [ ] Stream
+  * [ ] Ping
+  * [ ] Setting
+  * [ ] Data
 
 Adaptor
 ----
