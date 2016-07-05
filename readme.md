@@ -49,6 +49,9 @@ Core
     * [x] Direct
     * [ ] H2 (ALPN)
   * [ ] HPACK
+    * [ ] Static Table
+    * [ ] Dynamic Table
+    * [x] String Decoding
   * [ ] Stream
   * [ ] Ping
   * [ ] Setting
