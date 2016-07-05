@@ -44,6 +44,10 @@ Core
 * [x] HTTPS
 * [ ] 스트리밍 송신
 * [ ] HTTP2.0
+  * [x] 프로토콜 업그레이드
+    * [x] H2C
+    * [x] Direct
+    * [ ] H2 (ALPN)
   * [ ] HPACK
   * [ ] Stream
   * [ ] Ping
