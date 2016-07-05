@@ -30,5 +30,18 @@ namespace HttpServ.Http2
 
             return data;
         }
+
+        public static byte[] Pong(Http2PingResponse response)
+        {
+            var data = new byte[11];
+
+            data[2] = 2;
+            data[3] = (int)Http2FrameType.Ping;
+            data[4] = 0x1;
+            data[9] = response.opaqueData[0];
+            data[10] = response.opaqueData[1];
+
+            return data;
+        }
     }
 }

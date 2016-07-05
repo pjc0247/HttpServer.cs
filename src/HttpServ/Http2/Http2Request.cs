@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace HttpServ.Http2
 {
-    public enum Http2FrameType
+    public class Http2Request : WebRequest
     {
-        Data = 0,
-        Headers = 1,
-        Priority = 2,
-        RstStream = 3,
-        Setting = 4,
+        public int streamId { get; set; }
 
-        Ping = 6,
     }
 }

@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace HttpServ.Http2
 {
-    public class Http2HeadersRequest : WebRequest
+    public class Http2HeadersRequest : Http2Request
     {
         public bool hasPadding { get; set; }
         public bool hasPriority { get; set; }
-
-        public int streamId { get; set; }
 
         public List<HPackCommand> hpackCommands { get; set; }
 

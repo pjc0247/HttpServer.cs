@@ -22,6 +22,7 @@ namespace Testbed
             serv.AddMiddleware<HttpServ.Http2.Middlewares.Http2Handshake>();
             serv.AddMiddleware<HttpServ.Http2.Middlewares.PrefaceHandshake>();
             serv.AddMiddleware<HttpServ.Http2.Middlewares.Setting>();
+            serv.AddMiddleware<HttpServ.Http2.Middlewares.PingPong>();
             serv.EnableWebSocket();
             serv.Open(9916);
 

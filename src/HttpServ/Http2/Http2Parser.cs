@@ -38,6 +38,22 @@ namespace HttpServ.Http2
             return header;
         }
 
+        public static Http2PingRequest ParsePing(Http2Frame frame, ArraySegment<byte> data)
+        {
+            if (frame.length > data.Count)
+                return null;
+
+            var req = new Http2PingRequest();
+
+            req.opaqueData[0] = data.ElementAt(0);
+            req.opaqueData[1] = data.ElementAt(1);
+
+            Console.WriteLine("OPAQUE");
+            Console.WriteLine(req.opaqueData[0]);
+            Console.WriteLine(req.opaqueData[1]);
+
+            return req;
+        }
         public static Http2HeadersRequest ParseHeaders(Http2Frame frame, ArraySegment<byte> data)
         {
             if (frame.length > data.Count)

@@ -39,12 +39,24 @@ namespace HttpServ.Http2
                     stream = streams[header.streamId] = new HStream();
 
             }
+            else if (header.type == Http2FrameType.Ping)
+            {
+                var ping = Http2Parser.ParsePing(
+                    header, new ArraySegment<byte>(data.Array, data.Offset + 9, data.Count - 9));
+
+                if (ping == null)
+                    yield break;
+
+                yield return ping;
+            }
         }
 
         public byte[] OnWriteData(WebRequest request, WebResponse response)
         {
             if (response is Http2SettingResponse)
                 return Http2FrameBuilder.Setting();
+            else if (response is Http2PingResponse)
+                return Http2FrameBuilder.Pong((Http2PingResponse)response);
 
             return new byte[] { };
         }

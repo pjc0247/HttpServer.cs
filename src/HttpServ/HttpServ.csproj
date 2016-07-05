@@ -53,6 +53,7 @@
     <Compile Include="Configs\Config.Http.cs" />
     <Compile Include="Configs\Config.Session.cs" />
     <Compile Include="Configs\Config.WebSocket.cs" />
+    <Compile Include="Http2\ErrorCode.cs" />
     <Compile Include="Http2\HPack.cs" />
     <Compile Include="Http2\HPackCommand.cs" />
     <Compile Include="Http2\HPackCommandFactory.cs" />
@@ -65,7 +66,12 @@
     <Compile Include="Http2\Http2HeadersRequest.cs" />
     <Compile Include="Http2\Http2HeadersResponse.cs" />
     <Compile Include="Http2\Http2Parser.cs" />
+    <Compile Include="Http2\Http2PingRequest.cs" />
+    <Compile Include="Http2\Http2PingResponse.cs" />
+    <Compile Include="Http2\Http2Request.cs" />
     <Compile Include="Http2\Http2Response.cs" />
+    <Compile Include="Http2\Http2RstStreamRequest.cs" />
+    <Compile Include="Http2\Http2RstStreamResponse.cs" />
     <Compile Include="Http2\Http2Session.cs" />
     <Compile Include="Http2\Http2SettingRequest.cs" />
     <Compile Include="Http2\Http2SettingResponse.cs" />
@@ -73,6 +79,7 @@
     <Compile Include="Http2\Huffman\HuffDecoder.cs" />
     <Compile Include="Http2\Huffman\HuffStaticTable.cs" />
     <Compile Include="Http2\Middlewares\Http2Handshake.cs" />
+    <Compile Include="Http2\Middlewares\PingPong.cs" />
     <Compile Include="Http2\Middlewares\PrefaceHandshake.cs" />
     <Compile Include="Http2\Middlewares\Setting.cs" />
     <Compile Include="Http2\PredefinedIndexes.cs" />
@@ -117,6 +124,7 @@
     <None Include="App.config" />
     <Compile Include="WebSocket\Server.WebSocketExt.cs" />
     <Compile Include="Http\Server.HttpExt.cs" />
+    <None Include="Http2\Huffman\readme.md" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebSocketParser\WebSocketParser.vcxproj">
