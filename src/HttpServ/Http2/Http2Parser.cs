@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace HttpServ.Http2
 {
+    using Http;
+
     public class Http2Parser
     {
         public static Http2Frame ParseHeader(ArraySegment<byte> data)
@@ -38,8 +40,34 @@ namespace HttpServ.Http2
             return header;
         }
 
+        public static HttpRequest PraseData(Http2Frame frame, ArraySegment<byte> data)
+        {
+            if (frame.type == Http2FrameType.Data)
+                throw new InvalidOperationException("frame.type != Data");
+            if (frame.length > data.Count)
+                return null;
+
+            int padLength = 0;
+            int dataLength = frame.length;
+
+            if (frame.hasPadding)
+            {
+                padLength = Convert.ToInt32(data.ElementAt(0));
+                dataLength -= 1 /* padLength */ - padLength;
+            }
+
+            var request = new HttpRequest();
+            request.content = data
+                .Skip(frame.hasPadding ? 1 : 0)
+                .Take(dataLength).ToArray();
+
+            return request;
+        }
+
         public static Http2PingRequest ParsePing(Http2Frame frame, ArraySegment<byte> data)
         {
+            if (frame.type == Http2FrameType.Ping)
+                throw new InvalidOperationException("frame.type != Ping");
             if (frame.length > data.Count)
                 return null;
 
@@ -56,6 +84,8 @@ namespace HttpServ.Http2
         }
         public static Http2HeadersRequest ParseHeaders(Http2Frame frame, ArraySegment<byte> data)
         {
+            if (frame.type == Http2FrameType.Headers)
+                throw new InvalidOperationException("frame.type != Headers");
             if (frame.length > data.Count)
                 return null;
 

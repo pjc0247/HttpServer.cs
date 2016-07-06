@@ -37,7 +37,6 @@ namespace HttpServ.Http2
 
                 if (streams.ContainsKey(header.streamId) == false)
                     stream = streams[header.streamId] = new HStream();
-
             }
             else if (header.type == Http2FrameType.Ping)
             {
@@ -49,14 +48,35 @@ namespace HttpServ.Http2
 
                 yield return ping;
             }
+            else if (header.type == Http2FrameType.Data)
+            {
+
+            }
         }
 
         public byte[] OnWriteData(WebRequest request, WebResponse response)
         {
+            HStream stream = null;
+
+            if (request is Http2Request)
+            {
+                var http2Request = (Http2Request)request;   
+
+                if (http2Request.streamId != 0 &&
+                    streams.ContainsKey(http2Request.streamId))
+                    stream = streams[http2Request.streamId];
+            }
+
             if (response is Http2SettingResponse)
                 return Http2FrameBuilder.Setting();
             else if (response is Http2PingResponse)
                 return Http2FrameBuilder.Pong((Http2PingResponse)response);
+            else if (response is Http.HttpResponse)
+            {
+                var headerResponse = stream.hpack.BuildResponse((Http.HttpResponse)response);
+
+                
+            }
 
             return new byte[] { };
         }

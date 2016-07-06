@@ -23,6 +23,13 @@ namespace HttpServ.Http2
             };
         }
 
+        /// <summary>
+        /// 키는 그대로 사용하고,
+        /// 밸류만 업데이트하는 커맨드 생성
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static HPackCommand UpdateValue(int index, string value)
         {
             return new HPackCommand()
@@ -32,13 +39,24 @@ namespace HttpServ.Http2
                 strValue = value
             };
         }
-        public static HPackCommand UpdateValue(int index, int value)
+        
+        public static HPackCommand NotIndexing(string key, string value)
         {
             return new HPackCommand()
             {
-                type = HPackCommandType.Indexed_HasValue,
+                type = HPackCommandType.NoIndexing_HasKeyValue,
+                index = 0,
+                key = key,
+                strValue = value
+            };
+        }
+        public static HPackCommand UseIndexedKey(int index, string value)
+        {
+            return new HPackCommand()
+            {
+                type = HPackCommandType.NoIndexing_HasValue,
                 index = index,
-                intValue = value
+                strValue = value
             };
         }
     }

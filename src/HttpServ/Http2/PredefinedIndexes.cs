@@ -17,7 +17,14 @@ namespace HttpServ.Http2
         public static readonly int SchemeHttps = 7;
         
         public static readonly int Status1 = 8;
-        
+        public static readonly int Status200 = 8;
+        public static readonly int Status204 = 9;
+        public static readonly int Status206 = 10;
+        public static readonly int Status304 = 11;
+        public static readonly int Status400 = 12;
+        public static readonly int Status404 = 13;
+        public static readonly int Status500 = 14;
+
         public static readonly int AcceptCharset = 15;
         public static readonly int AcceptEncoding = 16;
         public static readonly int AcceptLanguage = 17;

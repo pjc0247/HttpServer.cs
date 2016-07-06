@@ -8,12 +8,17 @@ namespace HttpServ.Http2
 {
     public class Http2FrameBuilder
     {
+        private static readonly int Length8 = 2;
+        private static readonly int Type = 3;
+        private static readonly int Flags = 4;
+        private static readonly int Payload = 9;
+
         public static byte[] Setting()
         {
             var data = new byte[9];
 
-            data[3] = 4;
-            data[4] = 1;
+            data[Type] = 4;
+            data[Flags] = 1;
 
             return data;
         }
@@ -22,8 +27,9 @@ namespace HttpServ.Http2
         {
             var data = new byte[10];
 
-            data[3] = (int)Http2FrameType.RstStream;
-            data[4] = 0;
+            data[Length8] = 4;
+            data[Type] = (int)Http2FrameType.RstStream;
+            data[Flags] = 0;
 
             Buffer.BlockCopy(
                 data, 10, BitConverter.GetBytes(response.errorCode), 0, 4);
@@ -35,11 +41,11 @@ namespace HttpServ.Http2
         {
             var data = new byte[11];
 
-            data[2] = 2;
-            data[3] = (int)Http2FrameType.Ping;
-            data[4] = 0x1;
-            data[9] = response.opaqueData[0];
-            data[10] = response.opaqueData[1];
+            data[Length8] = 2;
+            data[Type] = (int)Http2FrameType.Ping;
+            data[Flags] = 0x1;
+            data[Payload] = response.opaqueData[0];
+            data[Payload+1] = response.opaqueData[1];
 
             return data;
         }
