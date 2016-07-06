@@ -52,11 +52,14 @@ Core
     * [ ] Static Table
     * [ ] Dynamic Table
     * [x] String Decoding
+    * [ ] String Encoding
   * [ ] Stream
   * [x] Ping
   * [ ] Setting
   * [ ] Data
-
+    * [ ] 조각난 데이타 프레임
+    * [x] Padding
+    
 Adaptor
 ----
 * [x] Adaptor 연결고리 제작
