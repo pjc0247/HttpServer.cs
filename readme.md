@@ -32,7 +32,7 @@ Core
   * [ ] 연결 관리
     * [ ] 먼저 보내기
     * [x] [먼저 끊기](src/HttpServ/Common/CloseSessionException.cs)
-  * [x] [핑퐁](src/HttpServ/WebSocket/Middlewares/PingPong.cs)
+  * [x] [PingPong](src/HttpServ/WebSocket/Middlewares/PingPong.cs)
   * [ ] Echo Server
   * [x] 프레그먼트
     * [x] 프레그먼트 메세지 수신(조합)
