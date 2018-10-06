@@ -1,13 +1,13 @@
 HttpServer.cs
 ----
-HttpServer implementation with C#.<br?
+HttpServer implementation with C#.<br>
 
 [doc](doc/)
 
 Core
 ----
 * [x] [Streaming HTTP request parsing.](src/HttpServ/Http/HttpParser.cs)
-  * [ ] LINQ 남발하는 파서 정리
+  * [ ] Re-implement without LINQ (for performance)
   * [ ] C++/CLI로 파서 재작성
 * [x] Response with simple format
 * [x] [gzip encoding](src/HttpServ/Http/Middlewares/GzipEncoder.cs)
