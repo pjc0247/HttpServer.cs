@@ -18,7 +18,7 @@ Core
 * [ ] WebSocket
   * [x] [Handshaking](src/HttpServ/WebSocket/Middlewares/WebSocketHandshaker.cs)
     * [ ] 버전 체크
-    * [ ] 서브프로토콜
+    * [ ] Subprotocol
   * [x] Protocol Upgrading
   * [x] [Frame parsing](src/WebSocketParser/WebSocketParser.cpp)
     * [x] Payload7
@@ -34,15 +34,15 @@ Core
     * [x] [먼저 끊기](src/HttpServ/Common/CloseSessionException.cs)
   * [x] [PingPong](src/HttpServ/WebSocket/Middlewares/PingPong.cs)
   * [ ] Echo Server
-  * [x] 프레그먼트
-    * [x] 프레그먼트 메세지 수신(조합)
-    * [x] 프레그먼트 사이에 오는 컨트롤 프레임 처리
-    * [ ] 프레그먼트 메세지 송신
+  * [x] Fragmentation
+    * [x] Receiving fragmented packets
+    * [x] Control frames between fragmented packets
+    * [ ] Sending fragmented packets
 * [ ] Exception handling
   * [ ] Parsing error (400)
   * [x] Internal server error (500)
   * [ ] 잘못된 버전 (505)
-  * [x] 마스크 없는 웹소켓 패킷
+  * [x] Packets without masks
   * [x] Request too long
   * [ ] Request timeout (408)
     * [x] HTTP
